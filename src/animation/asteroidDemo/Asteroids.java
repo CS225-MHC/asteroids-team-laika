@@ -1,4 +1,4 @@
-package animation.demo;
+package animation.asteroidDemo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,7 +10,7 @@ import java.awt.geom.AffineTransform;
  * This class demonstrates how shapes can be rotated and translated.
  *
  */
-public class AffineTransformDemo {
+public class Asteroids {
     // The shape that is drawn
     private Polygon p;
     
@@ -23,12 +23,22 @@ public class AffineTransformDemo {
     /**
      * Constructs a triangle
      */
-    public AffineTransformDemo () {
+    public Asteroids () {
         p = new Polygon();
-        p.addPoint(-10, 20);
-        p.addPoint(0, -20);
-        p.addPoint(10, 20);
-
+        // p.addPoint(-10, 20);
+        // p.addPoint(0, -20);
+        // p.addPoint(10, 20);
+        p.addPoint(0, 30);
+        p.addPoint(20, 10);
+        p.addPoint(20, -10);
+        //p.addPoint(45,0);
+        //p.addPoint(20, 0);
+        //p.addPoint(-15,0);
+        p.addPoint(0, -30);
+        p.addPoint(-20, -10);
+        p.addPoint(-20, 10);
+        //p.addPoint(-45,0);
+        //p.addPoint(-15,0);
         
         x = 100;
         y = 100;

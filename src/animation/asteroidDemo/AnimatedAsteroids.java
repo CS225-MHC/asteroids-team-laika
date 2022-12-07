@@ -1,4 +1,9 @@
-package animation.demo;
+package animation.asteroidDemo;
+
+import java.awt.Graphics2D;
+
+import animation.AbstractAnimation;
+import animation.AnimatedObject;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -7,14 +12,9 @@ import java.awt.geom.Ellipse2D;
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
 
-/**
- * A demo of what an animated object might look like. In this case, we have a
- * small black circle that moves from left to right across the window. When it
- * reaches the right edge of the window, it bounces and goes to the left edge.
- * At the left edge, it bounces and goes right.
- *
- */
-public class AnimatedObjectDemo implements AnimatedObject {
+
+public class AnimatedAsteroids implements AnimatedObject {
+
     // The diameter of the ball, in pixels
     private static final int BALL_SIZE = 10;
 
@@ -40,7 +40,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
      * 
      * @param animation the animation this object is part of
      */
-    public AnimatedObjectDemo(AbstractAnimation animation) {
+    public AnimatedAsteroids(AbstractAnimation animation) {
         this.animation = animation;
         ball = new Ellipse2D.Double(x, y, BALL_SIZE, BALL_SIZE);
   
@@ -151,6 +151,4 @@ public class AnimatedObjectDemo implements AnimatedObject {
         return BALL_SIZE;
     }
     
-
-
 }
