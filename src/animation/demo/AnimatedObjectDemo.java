@@ -33,6 +33,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
     
     // The ball shape
     private Ellipse2D ball;
+    
 
     /**
      * Creates the animated object
@@ -42,6 +43,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
     public AnimatedObjectDemo(AbstractAnimation animation) {
         this.animation = animation;
         ball = new Ellipse2D.Double(x, y, BALL_SIZE, BALL_SIZE);
+  
     }
 
     /**
