@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -27,11 +28,13 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
     // The object that moves during the animation.  You might have
     // many objects!
     //private AnimatedAsteroids shape = new AnimatedAsteroids(this);
-    
-    private Asteroids triangle = new Asteroids(this);
+
+
+    private Asteroids asteroidShape = new Asteroids(this);
+    //private ArrayList<Asteroids> asteroidList = new ArrayList<Asteroids>();
     
     private boolean moving = true;
-    
+
     /**
      * Constructs an animation and initializes it to be able to accept
      * key input.
@@ -49,7 +52,7 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            triangle.nextFrame();
+            asteroidShape.nextFrame();
             repaint();
             // if (checkCollision (shape, triangle)) {
             //     moving = false;
@@ -76,12 +79,20 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
         // Note that your code should not call paintComponent directly.
         // Instead your code calls repaint (as shown in the nextFrame
         // method above, and repaint will call paintComponent.
+
+
         
         super.paintComponent(g);
         //shape.paint((Graphics2D) g);
-        triangle.paint((Graphics2D) g);
+        asteroidShape.paint((Graphics2D) g);
+
+
+
+        // for(int i=0;i<2;i++){
+        //     asteroidList.get(i).paint((Graphics2D)g);
+        // }
         //make asteroids appear again and again
-        repaint();
+        //repaint();
     }
 
     @Override
