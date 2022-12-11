@@ -40,6 +40,8 @@ public class Asteroids implements AnimatedObject {
     //List<Polygon> asteroidsList = new ArrayList<>();
 
     int randNum =  new Random().nextInt(8);
+
+    private int rotation;
     
     
     /**
@@ -48,13 +50,14 @@ public class Asteroids implements AnimatedObject {
      * Creates the animated object
      * @param animation the animation this object is part of
      */
-    public Asteroids (AbstractAnimation animation) {
+    public Asteroids (AbstractAnimation animation, int astx, int asty, int rotate) {
 
         this.animation = animation;
+        this.rotation = rotate;
 
-        // for(int i = 0; i< asteroidsList.size();i++){
-        //     asteroidsList. = new Polygon();
-        // }
+        this.x = astx;
+        this.y = asty;
+
         p = new Polygon();
 
         //Create the Asteroid
@@ -66,19 +69,7 @@ public class Asteroids implements AnimatedObject {
         p.addPoint(-10, -40);
         p.addPoint(-40,-20);
         p.addPoint(-40,10);
-        // for(int i = 0; i< 2;i++){
-        //     asteroidsList.add(p);
-        // }
-        ArrayList<Polygon> asteroidList = new ArrayList<Polygon>();
-        for(int i = 0; i<= 2;i++){
-            asteroidList.add(p);
-
-        }
-        
-
-
-        //x = 0;
-        //y = y1;
+    
     }
 
 
@@ -87,15 +78,10 @@ public class Asteroids implements AnimatedObject {
      * @param g the graphics context to draw on
      */
     public void paint(Graphics2D g) {
-        // for(int i =0; i<10; i++){
-        //     ast.add(g.draw(getShape()));
-        // }
+
         g.setColor(Color.BLACK);
-        g.draw(getShape());
-        //need to udate list
-        // for(Polygon p : asteroidsList){
-        //     g.draw(getShape());
-        // }
+        g.draw(getShape(rotation));
+
     }
 
     /**
@@ -103,7 +89,7 @@ public class Asteroids implements AnimatedObject {
      * and rotation
      * @return the shape located as we want it to appear
      */
-    public Shape getShape() {
+    public Shape getShape(int rotation) {
         // AffineTransform captures the movement and rotation we
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
@@ -116,55 +102,24 @@ public class Asteroids implements AnimatedObject {
 
         
         // Rotate the shape 45 degrees to the left
-        at1.rotate(Math.PI/2);
+        //at1.rotate(Math.PI/2);
+        at1.rotate(rotation);
         AffineTransform at = at1;
         
         // Create a shape that looks like our triangle, but centered
         // and rotated as specified by the AffineTransform object.
-        // for(Polygon p1 : asteroidsList){
-        //     at.createTransformedShape(p1);
-        // }
+       
 
         return at.createTransformedShape(p);
     }
 
     @Override
     public void nextFrame() {
-        // TODO Auto-generated method stub
         // Update the x value to move in the current direction
       
+        x = calculateX(x, y, rotation);
+        y = calculateY(x, y, rotation);
 
-        if(randNum == 0){
-            x = x + moveAmount;
-
-        }
-        else if(randNum ==1){
-            y = y + moveAmount;
-
-        }
-        else if(randNum ==2){
-            x = x + moveAmount;
-            y = y + moveAmount;
-        }
-        else if(randNum ==3){
-            x = x - moveAmount;
-        }
-        else if(randNum ==4){
-            y = y - moveAmount;
-
-        }
-        else if(randNum ==5){
-            x = x - moveAmount;
-            y = y + moveAmount;
-        }
-        else if(randNum ==6){
-            x = x + moveAmount;
-            y = y - moveAmount;
-        }
-        else if (randNum ==7){
-            x = x - moveAmount;
-            y = y - moveAmount;
-        }
 
         // Check if the right edge of the ball is beyond the right
         // edge of the window. If it is, move it to the right edge
@@ -172,20 +127,12 @@ public class Asteroids implements AnimatedObject {
         // next move.
         if (x + 40 > animation.getWidth()) {
             x = 0;
-            y = new Random().nextInt(400);
-            randNum =  new Random().nextInt(8);
-
-
         }
 
         if(y + 40 > animation.getHeight()){
-            x = new Random().nextInt(500);
             y = 0;
-            randNum =  new Random().nextInt(8);
-            
         }
   
-
         // Check if the left edge of the ball is beyond the left
         // edge of the window. If it is, move it to the left edge
         // and change the direction, so it will move right on its
@@ -193,17 +140,29 @@ public class Asteroids implements AnimatedObject {
 
         else if (x < 0) {
             x = 500;
-            y = new Random().nextInt(400);
-            randNum = new Random().nextInt(8);
+            
         }
 
         else if (y <0){
-            x = new Random().nextInt(500);
+
             y = 500;
-            randNum = new Random().nextInt(8);
+            
         }
         
-        //p.setFrame(x, y, Polygon_height, polygon_width);
         
+    }
+    public int calculateX(int x, int y, int rotation) {
+        double xOffset = moveAmount * Math.sin(rotation);
+ 
+        x = (int) (x + xOffset);
+        return x;
+    }
+
+    public int calculateY(int x, int y, int rotation){
+        double yOffset = -moveAmount * Math.cos(rotation);
+
+        y = (int) (y + yOffset);
+        return y;
+
     }
 }

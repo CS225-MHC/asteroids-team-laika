@@ -7,10 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
+import java.util.Random;
 import javax.swing.JFrame;
-
 import animation.AbstractAnimation;
 
 /**
@@ -27,13 +25,38 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
     
     // The object that moves during the animation.  You might have
     // many objects!
-    //private AnimatedAsteroids shape = new AnimatedAsteroids(this);
 
+    int asteroidX ;
+    int asteroidY ;
+    int asteroidRotation;
+    // Asteroids[] asteroidsList;
+    // private Asteroids asteroidShape = new Asteroids(this, asteroidX, asteroidY, asteroidRotation);
+    Asteroids[] asteroidList = new Asteroids[5];
 
-    private Asteroids asteroidShape = new Asteroids(this);
+    // Asteroids asteroid1 = new Asteroids(this, 40, 40, (int)Math.PI/4);
+    // Asteroids asteroid2 = new Asteroids(this, 70, 70, (int)Math.PI/2);
+
     //private ArrayList<Asteroids> asteroidList = new ArrayList<Asteroids>();
     
     private boolean moving = true;
+
+    public Asteroids[] AsteroidsMethod(){
+        
+        asteroidX = new Random().nextInt(600);
+        asteroidY = new Random().nextInt(600);
+        double randNumber = new Random().nextDouble(Math.PI);
+        int rotation = (int) (Math.PI/randNumber);
+
+
+
+        for(int i=0; i<asteroidList.length;i++){
+           
+            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, rotation);
+        }
+        return asteroidList;
+
+    }
+
 
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -52,24 +75,18 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            asteroidShape.nextFrame();
+            for(int i = 0; i <asteroidList.length ; i++){
+
+                AsteroidsMethod()[i].nextFrame();
+                //asteroidList[i].nextFrame();
+            }
+            // asteroid1.nextFrame();
+            // asteroid2.nextFrame();
+
             repaint();
-            // if (checkCollision (shape, triangle)) {
-            //     moving = false;
-            // }
+
         }
     }
-
-    /**
-     * Check whether two object collide.  This tests whether their shapes intersect.
-     * @param shape1 the first shape to test
-     * @param shape2 the second shape to test
-     * @return true if the shapes intersect
-     */
-    // private boolean checkCollision(AnimatedAsteroids shape1,
-    //         Asteroids shape2) {
-    //     return shape2.getShape().intersects(shape1.getShape().getBounds2D());
-    // }
 
     /**
      * Paint the animation by painting the objects in the animation.
@@ -79,49 +96,17 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
         // Note that your code should not call paintComponent directly.
         // Instead your code calls repaint (as shown in the nextFrame
         // method above, and repaint will call paintComponent.
-
-
         
         super.paintComponent(g);
-        //shape.paint((Graphics2D) g);
-        asteroidShape.paint((Graphics2D) g);
+        // asteroid1.paint((Graphics2D) g);
+        // asteroid2.paint((Graphics2D) g);
+        for(int i = 0; i <asteroidList.length ; i++){
 
-
-
-        // for(int i=0;i<2;i++){
-        //     asteroidList.get(i).paint((Graphics2D)g);
-        // }
-        //make asteroids appear again and again
-        //repaint();
+            AsteroidsMethod()[i].paint((Graphics2D) g);
+            //asteroidList[i].paint((Graphics2D) g);
+        }
+        
     }
-
-    @Override
-    /**
-     * This is called on the downward action when the user presses a key.
-     * It notifies the animated ball about presses of up arrow, right 
-     * arrow, left arrow, and the space bar.  All other keys are ignored.
-     * @param e information abou the key pressed
-     */
-    // public void keyPressed(KeyEvent e) {
-    //     int key = e.getKeyCode();
-    //     switch (key) {
-    //     case KeyEvent.VK_UP:
-    //         shape.up();
-    //         break;
-    //     case KeyEvent.VK_RIGHT:
-    //         shape.right();
-    //         break;
-    //     case KeyEvent.VK_LEFT:
-    //         shape.left();
-    //         break;
-    //     case KeyEvent.VK_SPACE:
-    //         shape.space();
-    //         break;
-    //     default:
-    //         // Ignore all other keys
-                
-    //     }
-    // }
 
     
     /**
@@ -175,7 +160,6 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
