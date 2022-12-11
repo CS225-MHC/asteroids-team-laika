@@ -6,9 +6,9 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.JFrame;
 import animation.AbstractAnimation;
+import animation.Bullet;
 
 
 public class ShipAnimation extends AbstractAnimation implements KeyListener{
@@ -19,9 +19,11 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
     private static final int WINDOW_HEIGHT = 600;
 
     private BuildShip ship = new BuildShip(this);
+
+    private Bullet bullet ;
     
     private boolean moving = false; 
-
+    private boolean bulletMoving = false; 
     
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -44,7 +46,12 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
         
         super.paintComponent(g);
         ship.paint((Graphics2D) g);
+        if ( bulletMoving){
+             bullet.paint((Graphics2D) g);
+        }
+        
     }
+
 
     
     @Override
@@ -67,7 +74,9 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
             ship.turnLeft();
             break; 
         case KeyEvent.VK_SPACE:
-            ship.space();
+            bulletMoving = true; 
+            bullet = new Bullet(this, ship.getX(), ship.getY(), ship.getRotation());
+            bullet.shoot();
             break;
         case KeyEvent.VK_SHIFT: 
             ship.hyperspace();
@@ -94,12 +103,15 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
     protected void nextFrame() {
         if (moving) {
             ship.nextFrame();
-            repaint();
             // if (checkCollision (shape, triangle)) {
             //     moving = false;
             // }
             
         }
+        if ( bulletMoving){
+            bullet.nextFrame();
+        }
+        repaint();
 
     }
 

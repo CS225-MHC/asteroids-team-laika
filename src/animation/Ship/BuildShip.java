@@ -5,9 +5,9 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.util.Random;
-
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
+
 
 //build the ship 
 public class BuildShip implements AnimatedObject {
@@ -36,6 +36,8 @@ public class BuildShip implements AnimatedObject {
     int[] xPoints = {-10,0,10} ; 
     int[] yPoints = {20, -20,20};
 
+    //speed 
+    private int speed = 10; 
 
     /**
      * Creates the animated object
@@ -93,39 +95,39 @@ public class BuildShip implements AnimatedObject {
     public void forward() {
         //up
         if ( rotateAmt == 0 ){
-            y = y-10;
+            y = y-speed;
         }
         //down
         else if (rotateAmt == -Math.PI || rotateAmt == Math.PI){
-            y = y - (10*(-Math.abs(rotateAmt)/Math.PI));
+            y = y - (speed*(-Math.abs(rotateAmt)/Math.PI));
         }
         //right
         else if ( rotateAmt == Math.PI/2  || rotateAmt == -(3*Math.PI)/2){
-            x = x + 10; 
+            x = x + speed; 
         }
         //left
         else if ( rotateAmt == (3*Math.PI)/2 || rotateAmt == -Math.PI/2){
-            x = x - 10; 
+            x = x - speed; 
         }
         //right-up
         else if (rotateAmt == Math.PI/4 || rotateAmt == (-7*Math.PI)/4){
-            x = x +10;
-            y = y-10;
+            x = x +speed;
+            y = y-speed;
         }
         //right-down
         else if(rotateAmt == (-5*Math.PI)/4 || rotateAmt == (3*Math.PI)/4){
-            x = x +10;
-            y=y+10;
+            x = x +speed;
+            y=y+speed;
         }
         //left-up
         else if (rotateAmt == -Math.PI/4 || rotateAmt == (7*Math.PI)/4){
-            x=x-10;
-            y=y-10;
+            x=x-speed;
+            y=y-speed;
         }
         //left-down
         else if (rotateAmt == (5*Math.PI)/4 || rotateAmt == (-3*Math.PI)/4){
-            x=x-10;
-            y=y+10;
+            x=x-speed;
+            y=y+speed;
         }
 
         System.out.println ("Up");
@@ -151,13 +153,6 @@ public class BuildShip implements AnimatedObject {
 
     }
 
-    /**
-     * action to take when the user clicks the space button.
-     * This shoots a bullet towards the direction ship is facing
-     */
-    public void space() {
-        System.out.println ("Pew pew");
-    }
 
     /**
      * action to take when the user clicks the shift button.
@@ -189,6 +184,18 @@ public class BuildShip implements AnimatedObject {
             y = animation.getHeight()-SHIP_SIZE;
         }
     
+    }
+
+    public double getX(){
+        return x; 
+    }
+
+    public double getY(){
+        return y ; 
+    }
+
+    public double getRotation (){
+        return rotateAmt;
     }
 
 
