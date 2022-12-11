@@ -5,10 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
 
@@ -26,23 +22,13 @@ public class Asteroids implements AnimatedObject {
     // The top edge of the shape
     private int y;
 
-    //private int x1;
-
     // The number of pixels to move on each frame of the animation.
     private int moveAmount = 2;
 
     // The animation that this object is part of.
     private AbstractAnimation animation;
 
-    int x1 = new Random().nextInt(500);
-    int y1 = new Random().nextInt(400);
-
-    //List<Polygon> asteroidsList = new ArrayList<>();
-
-    int randNum =  new Random().nextInt(8);
-
     private int rotation;
-    
     
     /**
      * Constructs a triangle
@@ -60,15 +46,16 @@ public class Asteroids implements AnimatedObject {
 
         p = new Polygon();
 
-        //Create the Asteroid
+        //Create the Asteroid of 40x60 pixels
         p.addPoint(-20, 40);
-        p.addPoint(30, 40);
-        p.addPoint(50, 10);
+        p.addPoint(30,30);
+        p.addPoint(30,30);
         p.addPoint(30,0);
         p.addPoint(30, -20);
-        p.addPoint(-10, -40);
+        p.addPoint(-10, -30);
         p.addPoint(-40,-20);
-        p.addPoint(-40,10);
+        p.addPoint(-10,10);
+
     
     }
 
@@ -93,7 +80,6 @@ public class Asteroids implements AnimatedObject {
         // AffineTransform captures the movement and rotation we
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
-        //AffineTransform at2 = new AffineTransform();
         
         // x, y are where the origin of the shape will be.  In this
         // case, this is the center of the triangle.  See the constructor
@@ -102,7 +88,6 @@ public class Asteroids implements AnimatedObject {
 
         
         // Rotate the shape 45 degrees to the left
-        //at1.rotate(Math.PI/2);
         at1.rotate(rotation);
         AffineTransform at = at1;
         
@@ -117,8 +102,8 @@ public class Asteroids implements AnimatedObject {
     public void nextFrame() {
         // Update the x value to move in the current direction
       
-        x = calculateX(x, y, rotation);
-        y = calculateY(x, y, rotation);
+        x = calculateX(x, rotation);
+        y = calculateY(y, rotation);
 
 
         // Check if the right edge of the ball is beyond the right
@@ -151,14 +136,25 @@ public class Asteroids implements AnimatedObject {
         
         
     }
-    public int calculateX(int x, int y, int rotation) {
+
+    /**
+     * @param x
+     * @param rotation
+     * @return horizontal movement depending on asteroid's rotation
+     */
+    public int calculateX(int x, int rotation) {
         double xOffset = moveAmount * Math.sin(rotation);
  
         x = (int) (x + xOffset);
         return x;
     }
 
-    public int calculateY(int x, int y, int rotation){
+    /**
+     * @param y
+     * @param rotation
+     * @return vertical movement depending on asteroid's rotation
+     */
+    public int calculateY( int y, int rotation){
         double yOffset = -moveAmount * Math.cos(rotation);
 
         y = (int) (y + yOffset);

@@ -26,37 +26,38 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
     // The object that moves during the animation.  You might have
     // many objects!
 
-    int asteroidX ;
-    int asteroidY ;
+    int asteroidX;
+    int asteroidY; 
     int asteroidRotation;
-    // Asteroids[] asteroidsList;
-    // private Asteroids asteroidShape = new Asteroids(this, asteroidX, asteroidY, asteroidRotation);
+
     Asteroids[] asteroidList = new Asteroids[5];
-
-    // Asteroids asteroid1 = new Asteroids(this, 40, 40, (int)Math.PI/4);
-    // Asteroids asteroid2 = new Asteroids(this, 70, 70, (int)Math.PI/2);
-
-    //private ArrayList<Asteroids> asteroidList = new ArrayList<Asteroids>();
     
     private boolean moving = true;
-
-    public Asteroids[] AsteroidsMethod(){
+    /**
+     * Create a method to set an asteroids list of multiple asteroids
+     * moving at different points
+     */
+    public void setAsteroids(){
         
-        asteroidX = new Random().nextInt(600);
-        asteroidY = new Random().nextInt(600);
-        double randNumber = new Random().nextDouble(Math.PI);
-        int rotation = (int) (Math.PI/randNumber);
-
-
-
         for(int i=0; i<asteroidList.length;i++){
-           
-            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, rotation);
+            //create a random from 0 to pi
+            double randNumber = new Random().nextDouble(Math.PI);
+            //set the rotation to a random value
+            asteroidRotation = (int) (Math.PI/randNumber);
+            //create random x and y points where each asteroid appears
+            asteroidX = new Random().nextInt(400);
+            asteroidY = new Random().nextInt(400);
+            //update the asteroidList
+            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, asteroidRotation);
         }
-        return asteroidList;
 
     }
-
+    /**
+     * @return the list of multiple asteroids
+     */
+    public Asteroids[] getAsteroids(){
+        return asteroidList;
+    }
 
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -66,6 +67,7 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
+        setAsteroids();
     }
 
     @Override
@@ -74,15 +76,11 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
      * and repaints the window.
      */
     protected void nextFrame() {
+
         if (moving) {
             for(int i = 0; i <asteroidList.length ; i++){
-
-                AsteroidsMethod()[i].nextFrame();
-                //asteroidList[i].nextFrame();
+                getAsteroids()[i].nextFrame();
             }
-            // asteroid1.nextFrame();
-            // asteroid2.nextFrame();
-
             repaint();
 
         }
@@ -96,14 +94,11 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
         // Note that your code should not call paintComponent directly.
         // Instead your code calls repaint (as shown in the nextFrame
         // method above, and repaint will call paintComponent.
-        
+
         super.paintComponent(g);
-        // asteroid1.paint((Graphics2D) g);
-        // asteroid2.paint((Graphics2D) g);
         for(int i = 0; i <asteroidList.length ; i++){
 
-            AsteroidsMethod()[i].paint((Graphics2D) g);
-            //asteroidList[i].paint((Graphics2D) g);
+            getAsteroids()[i].paint((Graphics2D) g);
         }
         
     }
