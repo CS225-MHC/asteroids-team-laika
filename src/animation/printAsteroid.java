@@ -1,4 +1,4 @@
-package animation.asteroidDemo;
+package animation;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 import javax.swing.JFrame;
-import animation.AbstractAnimation;
 
 /**
  * This class provides a simple demonstration of how you would implement an 

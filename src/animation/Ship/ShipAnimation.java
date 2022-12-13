@@ -1,6 +1,7 @@
 package animation.Ship;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -33,6 +34,32 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
     Asteroids[] asteroidList = new Asteroids[5];
     
     private boolean asteroidMoving = true;
+
+    /**
+     * Create a method to set an asteroids list of multiple asteroids
+     * moving at different points
+     */
+    public void setAsteroids(){
+        
+        for(int i=0; i<asteroidList.length;i++){
+            //create a random from 0 to pi
+            double randNumber = new Random().nextDouble(2*Math.PI);
+            //set the rotation to a random value
+            asteroidRotation = randNumber;
+            //create random x and y points where each asteroid appears
+            asteroidX = new Random().nextInt(400);
+            asteroidY = new Random().nextInt(400);
+            //update the asteroidList
+            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, asteroidRotation);
+        }
+
+    }
+    /**
+     * @return the list of multiple asteroids
+     */
+    public Asteroids[] getAsteroids(){
+        return asteroidList;
+    }
     
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -42,6 +69,8 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
+        //need to change name of the constructor
+        setAsteroids();
     }
 
     /**
@@ -57,6 +86,11 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
         ship.paint((Graphics2D) g);
         if ( bulletMoving){
              bullet.paint((Graphics2D) g);
+        }
+
+        for(int i = 0; i <asteroidList.length ; i++){
+
+            getAsteroids()[i].paint((Graphics2D) g);
         }
         
     }
@@ -112,6 +146,7 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
     protected void nextFrame() {
         if (moving) {
             ship.nextFrame();
+            
             // if (checkCollision (shape, triangle)) {
             //     moving = false;
             // }
@@ -119,6 +154,12 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
         }
         if ( bulletMoving){
             bullet.nextFrame();
+        }
+
+        if(asteroidMoving){
+            for(int i = 0; i <asteroidList.length ; i++){
+                getAsteroids()[i].nextFrame();
+            }
         }
         repaint();
 
