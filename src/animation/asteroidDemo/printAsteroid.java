@@ -26,9 +26,9 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
     // The object that moves during the animation.  You might have
     // many objects!
 
-    int asteroidX;
-    int asteroidY; 
-    int asteroidRotation;
+    double asteroidX;
+    double asteroidY; 
+    double asteroidRotation;
 
     Asteroids[] asteroidList = new Asteroids[5];
     
@@ -41,9 +41,9 @@ public class printAsteroid extends AbstractAnimation implements KeyListener {
         
         for(int i=0; i<asteroidList.length;i++){
             //create a random from 0 to pi
-            double randNumber = new Random().nextDouble(Math.PI);
+            double randNumber = new Random().nextDouble(2*Math.PI);
             //set the rotation to a random value
-            asteroidRotation = (int) (Math.PI/randNumber);
+            asteroidRotation = randNumber;
             //create random x and y points where each asteroid appears
             asteroidX = new Random().nextInt(400);
             asteroidY = new Random().nextInt(400);
