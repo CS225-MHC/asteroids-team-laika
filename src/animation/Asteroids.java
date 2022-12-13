@@ -1,12 +1,10 @@
-package animation.asteroidDemo;
+package animation;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import animation.AbstractAnimation;
-import animation.AnimatedObject;
 
 /**
  * This class demonstrates how shapes can be rotated and translated.

@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import animation.AbstractAnimation;
 import animation.Bullet;
-
+import animation.Asteroids;
 
 public class ShipAnimation extends AbstractAnimation implements KeyListener{
     // The width of the window, in pixels.
@@ -24,6 +24,15 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
     
     private boolean moving = false; 
     private boolean bulletMoving = false; 
+
+    //asteroid variables
+    double asteroidX;
+    double asteroidY; 
+    double asteroidRotation;
+
+    Asteroids[] asteroidList = new Asteroids[5];
+    
+    private boolean asteroidMoving = true;
     
     /**
      * Constructs an animation and initializes it to be able to accept
