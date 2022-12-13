@@ -17,10 +17,10 @@ public class Asteroids implements AnimatedObject {
     private Polygon p;
     
     // The left edge of the shape
-    private int x;
+    private double x;
     
     // The top edge of the shape
-    private int y;
+    private double y;
 
     // The number of pixels to move on each frame of the animation.
     private int moveAmount = 2;
@@ -28,7 +28,8 @@ public class Asteroids implements AnimatedObject {
     // The animation that this object is part of.
     private AbstractAnimation animation;
 
-    private int rotation;
+    private double rotation;
+
     
     /**
      * Constructs a triangle
@@ -36,7 +37,7 @@ public class Asteroids implements AnimatedObject {
      * Creates the animated object
      * @param animation the animation this object is part of
      */
-    public Asteroids (AbstractAnimation animation, int astx, int asty, int rotate) {
+    public Asteroids (AbstractAnimation animation, double astx, double asty, double rotate) {
 
         this.animation = animation;
         this.rotation = rotate;
@@ -47,14 +48,15 @@ public class Asteroids implements AnimatedObject {
         p = new Polygon();
 
         //Create the Asteroid of 40x60 pixels
-        p.addPoint(-20, 40);
-        p.addPoint(30,30);
-        p.addPoint(30,30);
-        p.addPoint(30,0);
-        p.addPoint(30, -20);
+        p.addPoint(-10, 30);
+        p.addPoint(10,30);
+        p.addPoint(20,0);
+        p.addPoint(10,-30);
         p.addPoint(-10, -30);
-        p.addPoint(-40,-20);
-        p.addPoint(-10,10);
+        p.addPoint(-20,0);
+        p.addPoint(-20,20);
+
+
 
     
     }
@@ -76,7 +78,7 @@ public class Asteroids implements AnimatedObject {
      * and rotation
      * @return the shape located as we want it to appear
      */
-    public Shape getShape(int rotation) {
+    public Shape getShape(double rotation) {
         // AffineTransform captures the movement and rotation we
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
@@ -110,11 +112,11 @@ public class Asteroids implements AnimatedObject {
         // edge of the window. If it is, move it to the right edge
         // and change the direction, so it will move left on its
         // next move.
-        if (x + 40 > animation.getWidth()) {
+        if (x - 20 > animation.getWidth()) {
             x = 0;
         }
 
-        if(y + 40 > animation.getHeight()){
+        if(y -30 > animation.getHeight()){
             y = 0;
         }
   
@@ -123,14 +125,14 @@ public class Asteroids implements AnimatedObject {
         // and change the direction, so it will move right on its
         // next move.
 
-        else if (x < 0) {
-            x = 500;
+        else if (x + 20< 0) {
+            x = 620;
             
         }
 
-        else if (y <0){
+        else if (y +30 <0){
 
-            y = 500;
+            y = 630;
             
         }
         
@@ -142,10 +144,10 @@ public class Asteroids implements AnimatedObject {
      * @param rotation
      * @return horizontal movement depending on asteroid's rotation
      */
-    public int calculateX(int x, int rotation) {
+    public double calculateX(double x, double rotation) {
         double xOffset = moveAmount * Math.sin(rotation);
  
-        x = (int) (x + xOffset);
+        x = x + xOffset;
         return x;
     }
 
@@ -154,10 +156,10 @@ public class Asteroids implements AnimatedObject {
      * @param rotation
      * @return vertical movement depending on asteroid's rotation
      */
-    public int calculateY( int y, int rotation){
+    public double calculateY( double y, double rotation){
         double yOffset = -moveAmount * Math.cos(rotation);
 
-        y = (int) (y + yOffset);
+        y = y + yOffset;
         return y;
 
     }
