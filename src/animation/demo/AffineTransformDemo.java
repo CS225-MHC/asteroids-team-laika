@@ -28,6 +28,7 @@ public class AffineTransformDemo {
         p.addPoint(-10, 20);
         p.addPoint(0, -20);
         p.addPoint(10, 20);
+
         
         x = 100;
         y = 100;
@@ -58,7 +59,7 @@ public class AffineTransformDemo {
         at1.translate(x, y);
         
         // Rotate the shape 45 degrees to the left
-        at1.rotate(Math.PI/4);
+        at1.rotate(Math.PI/2);
         AffineTransform at = at1;
         
         // Create a shape that looks like our triangle, but centered
