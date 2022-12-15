@@ -12,27 +12,29 @@ import animation.AbstractAnimation;
 import animation.Bullet;
 import animation.Asteroids;
 
-public class ShipAnimation extends AbstractAnimation implements KeyListener{
+
+
+public class GameAnimation extends AbstractAnimation implements KeyListener{
     // The width of the window, in pixels.
     private static final int WINDOW_WIDTH = 600;
     
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
+    // Create new ship
     private BuildShip ship = new BuildShip(this);
+    private boolean shipVisible = true;
+    private boolean moving = false;
 
+    // Create a bullet
     private Bullet bullet ;
-    
-    private boolean moving = false; 
     private boolean bulletMoving = false; 
 
     //asteroid variables
     double asteroidX;
     double asteroidY; 
     double asteroidRotation;
-
     Asteroids[] asteroidList = new Asteroids[5];
-    
     private boolean asteroidMoving = true;
 
     /**
@@ -50,9 +52,9 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
             asteroidX = new Random().nextInt(400);
             asteroidY = new Random().nextInt(400);
             //update the asteroidList
-            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, asteroidRotation);
-        }
+            asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, asteroidRotation, asteroidMoving);
 
+         }
     }
     /**
      * @return the list of multiple asteroids
@@ -65,7 +67,7 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
      * Constructs an animation and initializes it to be able to accept
      * key input.
      */
-    public ShipAnimation () {
+    public GameAnimation () {
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
@@ -78,21 +80,21 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
      * @param g the graphic context to draw on
      */
     public void paintComponent(Graphics g) {
-        // Note that your code should not call paintComponent directly.
-        // Instead your code calls repaint (as shown in the nextFrame
-        // method above, and repaint will call paintComponent.
-        
+
         super.paintComponent(g);
-        ship.paint((Graphics2D) g);
-        if ( bulletMoving){
-             bullet.paint((Graphics2D) g);
+        if(shipVisible){
+            ship.paint((Graphics2D) g);
+            if ( bulletMoving){
+                bullet.paint((Graphics2D) g);
+           }
         }
 
         for(int i = 0; i <asteroidList.length ; i++){
-
-            getAsteroids()[i].paint((Graphics2D) g);
+            if(asteroidList[i].astVisible){
+                getAsteroids()[i].paint((Graphics2D) g);
+            }        
         }
-        
+    
     }
 
 
@@ -144,27 +146,55 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
 
     @Override
     protected void nextFrame() {
+         
         if (moving) {
             ship.nextFrame();
-            
-            // if (checkCollision (shape, triangle)) {
-            //     moving = false;
-            // }
             
         }
         if ( bulletMoving){
             bullet.nextFrame();
+            // check if bullet hits an asteroid
+            for(int i = 0; i <asteroidList.length ; i++){ 
+                if (checkCollision (bullet, getAsteroids()[i])) {
+                    getAsteroids()[i].isMoving = false; //asteroid stops moving
+                    getAsteroids()[i].astVisible = false; //asteroid dissappears if bullets hits it
+                    System.out.println("HIT");
+                }
+            }
         }
 
-        if(asteroidMoving){
-            for(int i = 0; i <asteroidList.length ; i++){
-                getAsteroids()[i].nextFrame();
+        for(int i = 0; i <asteroidList.length ; i++){
+            getAsteroids()[i].nextFrame();
+            // check if asteroid hits the ship
+            if (checkShipCollision(getAsteroids()[i], ship)) {
+                shipVisible = false; // make ship disappear
+                System.out.println("HIT");
             }
         }
         repaint();
-
     }
 
+    /**
+     * Check whether the bullet and asteroid collides
+     * @param shape1 the bullet
+     * @param shape2 the asteroid
+     * @return true if the shapes intersect
+     */
+    private boolean checkCollision(Bullet shape1, Asteroids shape2) {
+
+        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
+
+    }
+    /**
+     * Check whether asteroid and ship collides.
+     * @param shape1 the asteroid
+     * @param shape2 the ship
+     * @return
+     */
+    private boolean checkShipCollision(Asteroids shape1, BuildShip shape2){
+
+        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
+    }
 
     public static void main(String[] args) {
         //Create the window,
@@ -177,7 +207,7 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener{
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create the animation.
-        ShipAnimation game = new ShipAnimation();
+        GameAnimation game = new GameAnimation();
 
         // // Add the animation to the window
         Container contentPane = f.getContentPane();

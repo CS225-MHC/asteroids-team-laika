@@ -2,6 +2,7 @@ package animation;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.Shape;
 
 
 
@@ -52,6 +53,15 @@ public class Bullet implements AnimatedObject{
         g.fill(bullet);
     
     }
+
+    /**
+     * Returns the ball that is the graphics shape 
+     * @return the ball that is the graphics shape being drawn
+     */
+    public Shape getShape() {
+        return bullet;
+    }
+
 
     /**
      * Moves the ball moveAmt times. if it goes above the screen, it doesn't wrap around 

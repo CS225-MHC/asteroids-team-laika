@@ -15,18 +15,22 @@ public class Asteroids implements AnimatedObject {
     private Polygon p;
     
     // The left edge of the shape
-    private double x;
+    public double x;
     
     // The top edge of the shape
-    private double y;
+    public double y;
 
     // The number of pixels to move on each frame of the animation.
     private int moveAmount = 2;
+
+    public boolean astVisible = true;
 
     // The animation that this object is part of.
     private AbstractAnimation animation;
 
     private double rotation;
+
+    public boolean isMoving = true;
 
     
     /**
@@ -35,10 +39,11 @@ public class Asteroids implements AnimatedObject {
      * Creates the animated object
      * @param animation the animation this object is part of
      */
-    public Asteroids (AbstractAnimation animation, double astx, double asty, double rotate) {
+    public Asteroids (AbstractAnimation animation, double astx, double asty, double rotate, boolean isMoving) {
 
         this.animation = animation;
         this.rotation = rotate;
+        this.isMoving = isMoving;
 
         this.x = astx;
         this.y = asty;
@@ -65,9 +70,11 @@ public class Asteroids implements AnimatedObject {
      * @param g the graphics context to draw on
      */
     public void paint(Graphics2D g) {
-
-        g.setColor(Color.BLACK);
-        g.draw(getShape(rotation));
+        if(astVisible){
+            g.setColor(Color.BLACK);
+            g.draw(getShape());
+        }
+        
 
     }
 
@@ -76,7 +83,8 @@ public class Asteroids implements AnimatedObject {
      * and rotation
      * @return the shape located as we want it to appear
      */
-    public Shape getShape(double rotation) {
+    // public Shape getShape(double rotation) {
+        public Shape getShape() {
         // AffineTransform captures the movement and rotation we
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
@@ -87,19 +95,19 @@ public class Asteroids implements AnimatedObject {
         at1.translate(x, y);
 
         
-        // Rotate the shape 45 degrees to the left
+        // Rotate the shape according to random angle
         at1.rotate(rotation);
         AffineTransform at = at1;
         
         // Create a shape that looks like our triangle, but centered
         // and rotated as specified by the AffineTransform object.
-       
-
         return at.createTransformedShape(p);
     }
 
     @Override
     public void nextFrame() {
+
+       if(isMoving){
         // Update the x value to move in the current direction
       
         x = calculateX(x, rotation);
@@ -110,11 +118,11 @@ public class Asteroids implements AnimatedObject {
         // edge of the window. If it is, move it to the right edge
         // and change the direction, so it will move left on its
         // next move.
-        if (x - 20 > animation.getWidth()) {
+        if (x - 40> animation.getWidth()) {
             x = 0;
         }
 
-        if(y -30 > animation.getHeight()){
+        if(y-60> animation.getHeight()){
             y = 0;
         }
   
@@ -123,16 +131,15 @@ public class Asteroids implements AnimatedObject {
         // and change the direction, so it will move right on its
         // next move.
 
-        else if (x + 20< 0) {
-            x = 620;
+        else if (x +40 < 0) {
+            x = animation.getWidth()-40;
             
         }
-
-        else if (y +30 <0){
-
-            y = 630;
+        else if (y + 60<0){
+            y = animation.getHeight()-60;
             
         }
+    }
         
         
     }
