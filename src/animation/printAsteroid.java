@@ -10,7 +10,6 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 import javax.swing.JFrame;
 import animation.AbstractAnimation;
-import animation.Asteroids;
 
 /**
  * This class provides a simple demonstration of how you would implement an 
