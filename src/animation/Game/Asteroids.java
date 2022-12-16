@@ -22,6 +22,7 @@ public class Asteroids implements AnimatedObject {
     // The number of pixels to move on each frame of the animation.
     private int moveAmount = 2;
 
+    //makes the asteroid visible in the frame 
     public boolean astVisible = true;
 
     // The animation that this object is part of.
@@ -88,9 +89,7 @@ public class Asteroids implements AnimatedObject {
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
         
-        // x, y are where the origin of the shape will be.  In this
-        // case, this is the center of the triangle.  See the constructor
-        // to see where the points are.
+        // x, y are where the origin of the shape will be.
         at1.translate(x, y);
 
         
@@ -98,8 +97,7 @@ public class Asteroids implements AnimatedObject {
         at1.rotate(rotation);
         AffineTransform at = at1;
         
-        // Create a shape that looks like our triangle, but centered
-        // and rotated as specified by the AffineTransform object.
+        // Create a asteroid
         return at.createTransformedShape(p);
     }
 
@@ -112,11 +110,6 @@ public class Asteroids implements AnimatedObject {
         x = calculateX(x, rotation);
         y = calculateY(y, rotation);
 
-
-        // Check if the right edge of the ball is beyond the right
-        // edge of the window. If it is, move it to the right edge
-        // and change the direction, so it will move left on its
-        // next move.
         if (x - 40> animation.getWidth()) {
             x = 0;
         }
@@ -124,11 +117,6 @@ public class Asteroids implements AnimatedObject {
         if(y-60> animation.getHeight()){
             y = 0;
         }
-  
-        // Check if the left edge of the ball is beyond the left
-        // edge of the window. If it is, move it to the left edge
-        // and change the direction, so it will move right on its
-        // next move.
 
         else if (x +40 <= 0) {
             x = animation.getWidth()-40;

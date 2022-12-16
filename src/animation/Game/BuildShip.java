@@ -45,7 +45,8 @@ public class BuildShip implements AnimatedObject {
     public BuildShip(AbstractAnimation animation) {
         this.animation = animation;
         s = new Polygon(xPoints, yPoints, 3 );
-        x = 300;  // adjusts to the screen 
+        // adjusts to the screen and puts the ship in thi middle of the frame 
+        x = 300; 
         y = 300; 
 
     }
@@ -91,44 +92,13 @@ public class BuildShip implements AnimatedObject {
      * This moves the ship straight to the direction the ship is facing
      */
     public void forward() {
-        //up
-        if ( rotateAmt == 0 ){
-            y = y-speed;
-        }
-        //down
-        else if (rotateAmt == -Math.PI || rotateAmt == Math.PI){
-            y = y - (speed*(-Math.abs(rotateAmt)/Math.PI));
-        }
-        //right
-        else if ( rotateAmt == Math.PI/2  || rotateAmt == -(3*Math.PI)/2){
-            x = x + speed; 
-        }
-        //left
-        else if ( rotateAmt == (3*Math.PI)/2 || rotateAmt == -Math.PI/2){
-            x = x - speed; 
-        }
-        //right-up
-        else if (rotateAmt == Math.PI/4 || rotateAmt == (-7*Math.PI)/4){
-            x = x +speed;
-            y = y-speed;
-        }
-        //right-down
-        else if(rotateAmt == (-5*Math.PI)/4 || rotateAmt == (3*Math.PI)/4){
-            x = x +speed;
-            y=y+speed;
-        }
-        //left-up
-        else if (rotateAmt == -Math.PI/4 || rotateAmt == (7*Math.PI)/4){
-            x=x-speed;
-            y=y-speed;
-        }
-        //left-down
-        else if (rotateAmt == (5*Math.PI)/4 || rotateAmt == (-3*Math.PI)/4){
-            x=x-speed;
-            y=y+speed;
-        }
 
-        //System.out.println ("Up");
+        double xOffset =  speed*Math.sin(rotateAmt); 
+        double yOffset = -speed*Math.cos(rotateAmt); 
+
+        y = y+ yOffset; 
+        x = x+ xOffset; 
+
     }
 
     /**
@@ -137,7 +107,6 @@ public class BuildShip implements AnimatedObject {
      */
     public void turnRight() {
         rotateAmt = rotateAmt + Math.PI/4;
-        //System.out.println ("right");
 
     }
 
@@ -147,7 +116,6 @@ public class BuildShip implements AnimatedObject {
      */
     public void turnLeft() {
         rotateAmt = rotateAmt + -Math.PI/4;
-        //System.out.println ("left");
 
     }
 
@@ -159,7 +127,7 @@ public class BuildShip implements AnimatedObject {
     public void hyperspace() {
         x = moveAmt.nextInt(upperBound); 
         y = moveAmt.nextInt(upperBound);
-        //System.out.println ("Nyoom");
+        
     }
 
     /**

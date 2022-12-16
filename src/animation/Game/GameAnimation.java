@@ -98,6 +98,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         super.paintComponent(g);
         if(shipVisible){
             ship.paint((Graphics2D) g);
+
             if ( bulletMoving){
                 int activeBullets=0;
                 for(int i=0; i<bullets.length;i++){
@@ -111,6 +112,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
            }
 
            int counter = 0 ; 
+
             for ( int i = 0 ; i< asteroidList.length; i++){
                 if ( getAsteroids()[i].astVisible == false){
                     counter++;
@@ -145,6 +147,9 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         
     }
 
+    /*
+     * initializes a new bullet at index b 
+     */
     public void buildBullet(){
         int activeBullets=0;
         for(int i=0; i<bullets.length;i++){
@@ -213,21 +218,24 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         if ( bulletMoving){
             // check if bullet hits an asteroid
             int activeBullets=0;
+
             for(int i=0; i<bullets.length;i++){
                 if(bullets[i]!= null){
                     activeBullets = activeBullets +1;
                 }
             }
+
             for(int j =0; j < activeBullets;j++){
                 bullets[j].nextFrame();;
             }
+
             for(int j = 0; j< activeBullets; j++){ 
                 for (int i = 0; i <asteroidList.length ; i++){
                     if (checkCollision (bullets[j], getAsteroids()[i])) { 
                         getAsteroids()[i].isMoving = false; //asteroid stops moving
-                        getAsteroids()[i].astVisible = false;
                         getAsteroids()[i].x = 2000000;
-                        getAsteroids()[i].y = 2000000; //puts the asteroid out of the frame  
+                        getAsteroids()[i].y = 2000000; //puts the asteroid out of the frame
+                        getAsteroids()[i].astVisible = false; 
                         scoreB.increaseScore(); 
                         break; 
                     }
@@ -246,9 +254,9 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             
         }
 
-
         repaint();
     }
+
 
     /**
      * Check whether the bullet and asteroid collides
@@ -264,6 +272,8 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             return false; 
         }
     }
+
+
     /**
      * Check whether asteroid and ship collides.
      * @param shape1 the asteroid
@@ -304,7 +314,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //before the window closes, take the score, compare it with the file's score and 
-        //write it in HighScore file if currScore> file's score  
+        //write it in HighScore file if currScore> file's last recorded score  
         f.addWindowListener(new WindowAdapter() { 
             public void windowClosing(WindowEvent ev) {
                  
