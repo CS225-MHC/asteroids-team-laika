@@ -43,13 +43,13 @@ public class Scoreborad extends JPanel implements AnimatedObject {
                 String lastScore = line.split(": ")[line.split(": ").length -1]; 
                 highS = Integer.parseInt(lastScore);
                 return highS; 
+                
                                     
             }else{
                 highS = 0 ; 
             }
             
         }catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         };    
         return highS; 
@@ -57,8 +57,8 @@ public class Scoreborad extends JPanel implements AnimatedObject {
     }
 
     /**
-    * updates the score dynamically and shows in the window
-    * every time a large asteroid is hit, score increases by 20.   
+    * every time a large asteroid is hit, score increases by 20.  
+    * updates the score dynamically and shows in the frame 
     */
     public void increaseScore(){
         score = score + 20; 
@@ -81,12 +81,11 @@ public class Scoreborad extends JPanel implements AnimatedObject {
 
     @Override
     public void paint(Graphics2D g) {
-        // TODO Auto-generated method stub
         
     }
+    
     @Override
     public void nextFrame() {
-        // TODO Auto-generated method stub
         
     }
 
