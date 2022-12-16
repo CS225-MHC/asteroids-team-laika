@@ -1,9 +1,4 @@
-<<<<<<< Updated upstream:src/animation/Asteroids.java
 package animation;
-=======
-package animation.Asteroids;
->>>>>>> Stashed changes:src/animation/Asteroids/Asteroids.java
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;

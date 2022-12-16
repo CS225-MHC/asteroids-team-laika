@@ -130,7 +130,7 @@ public class BuildShip implements AnimatedObject {
             y=y+speed;
         }
 
-        System.out.println ("Up");
+        //System.out.println ("Up");
     }
 
     /**
@@ -139,7 +139,7 @@ public class BuildShip implements AnimatedObject {
      */
     public void turnRight() {
         rotateAmt = rotateAmt + Math.PI/4;
-        System.out.println ("right");
+        //System.out.println ("right");
 
     }
 
@@ -149,7 +149,7 @@ public class BuildShip implements AnimatedObject {
      */
     public void turnLeft() {
         rotateAmt = rotateAmt + -Math.PI/4;
-        System.out.println ("left");
+        //System.out.println ("left");
 
     }
 
@@ -161,7 +161,7 @@ public class BuildShip implements AnimatedObject {
     public void hyperspace() {
         x = moveAmt.nextInt(upperBound); 
         y = moveAmt.nextInt(upperBound);
-        System.out.println ("Nyoom");
+        //System.out.println ("Nyoom");
     }
 
     /**

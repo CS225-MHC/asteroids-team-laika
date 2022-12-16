@@ -3,23 +3,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import animation.AbstractAnimation;
 import animation.Bullet;
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
 import animation.Asteroids;
-
-
-
-public class GameAnimation extends AbstractAnimation implements KeyListener{
-=======
 import animation.Scoreborad;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -30,19 +25,24 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.awt.event.WindowAdapter;
 
+//scoreIncrease: malfunctinoing due to checkCollision 
+//at the end of the game, only text is printed. Is that okay?(note, you can still move the ship and shoot but 
+//there'll be no asteroids obv & remaining asteroids will still roam around, there will be no ship)
+//one loophole found in the collison thingy. 
+//checkShipCollision - falls into a forever loop
 
-public class ShipAnimation extends AbstractAnimation implements KeyListener, WindowListener  {
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
+
+public class GameAnimation extends AbstractAnimation implements KeyListener, WindowListener{
+
     // The width of the window, in pixels.
     private static final int WINDOW_WIDTH = 600;
     
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
 
     // Create new ship
     private BuildShip ship = new BuildShip(this);
-    private boolean shipVisible = true;
+    private static boolean shipVisible = true;
     private boolean moving = false;
 
     // Create a bullet
@@ -55,6 +55,9 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
     double asteroidRotation;
     Asteroids[] asteroidList = new Asteroids[5];
     private boolean asteroidMoving = true;
+
+    //Create the scoreboard 
+    static Scoreborad scoreB = new Scoreborad(); 
 
     /**
      * Create a method to set an asteroids list of multiple asteroids
@@ -81,24 +84,7 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
     public Asteroids[] getAsteroids(){
         return asteroidList;
     }
-=======
-    
-    //builidng the ship 
-    private BuildShip ship = new BuildShip(this);
-    
-    //Create the scoreborad 
-    public static Scoreborad scoreB  = new Scoreborad(); 
 
-    //building the bullet     private Bullet bullet ;
-    private Bullet bullet ;  
-
-    private int j = 0;
-
-
-    private boolean moving = false; //for ship 
-    private boolean bulletMoving = false; //bullte
-  
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
     
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -107,14 +93,9 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
     public GameAnimation () {
         // Allow the game to receive key input
         setFocusable(true);
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
         addKeyListener (this);
-        //need to change name of the constructor
         setAsteroids();
-=======
-        addKeyListener ((KeyListener) this);
 
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
     }
 
 
@@ -125,18 +106,15 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
         if(shipVisible){
             ship.paint((Graphics2D) g);
             if ( bulletMoving){
                 bullet.paint((Graphics2D) g);
            }
-=======
-        ship.paint((Graphics2D) g);
-        if ( bulletMoving){
-            bullet.paint((Graphics2D) g);
-
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
+        }else{
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("arcade", Font.BOLD, 40));
+            g.drawString("Game Over", 200, 200);
         }
 
         for(int i = 0; i <asteroidList.length ; i++){
@@ -144,7 +122,19 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
                 getAsteroids()[i].paint((Graphics2D) g);
             }        
         }
-    
+
+        int counter = 0 ; 
+        for ( int i = 0 ; i< asteroidList.length; i++){
+            if ( getAsteroids()[i].astVisible == false){
+                counter++;
+            } 
+            if( counter == asteroidList.length){
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("arcade", Font.BOLD, 40));
+                g.drawString("You Win!!", 200, 200);
+            }    
+            
+        }
     }
 
 
@@ -172,7 +162,6 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
             bulletMoving = true;
             bullet = new Bullet(this, ship.getX(), ship.getY(), ship.getRotation());
             bullet.shoot();
-            //scoreB.increaseScore();//call score increase in case of collision 
             break;
         case KeyEvent.VK_SHIFT: 
             ship.hyperspace();
@@ -200,7 +189,6 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
          
         if (moving) {
             ship.nextFrame();
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
             
         }
         if ( bulletMoving){
@@ -209,8 +197,7 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
             for(int i = 0; i <asteroidList.length ; i++){ 
                 if (checkCollision (bullet, getAsteroids()[i])) {
                     getAsteroids()[i].isMoving = false; //asteroid stops moving
-                    getAsteroids()[i].astVisible = false; //asteroid dissappears if bullets hits it
-                    System.out.println("HIT");
+                    getAsteroids()[i].astVisible = false; //asteroid dissappears if bullets hits it 
                 }
             }
         }
@@ -221,15 +208,10 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
             if (checkShipCollision(getAsteroids()[i], ship)) {
                 shipVisible = false; // make ship disappear
                 System.out.println("HIT");
+                break;  //don't have any effect(?)
             }
-=======
-
         }
-        if ( bulletMoving){
-            bullet.nextFrame();
 
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
-        }
 
         repaint();
     }
@@ -241,9 +223,13 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
      * @return true if the shapes intersect
      */
     private boolean checkCollision(Bullet shape1, Asteroids shape2) {
-
-        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
-
+        
+        if (shape2.getShape().intersects(shape1.getShape().getBounds2D())){
+            //scoreB.increaseScore(); 
+            return true; 
+        }else{
+            return false; 
+        }
     }
     /**
      * Check whether asteroid and ship collides.
@@ -253,21 +239,22 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
      */
     private boolean checkShipCollision(Asteroids shape1, BuildShip shape2){
 
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
-=======
-    /**
+
+    }
+
+    /** 
      * call this method in case of ship-asteroid collison 
      * @return component over which displays game over on the screen 
      */
-    public static Component gameOver(){
-        JLabel over = new JLabel(); 
-        over.setText("Game Over");
-        over.setHorizontalAlignment(SwingConstants.CENTER);
-        System.exit(2);
-        return over;
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
-    }
+    // public static Container gameOver(){
+    //     JLabel over = new JLabel(); 
+    //     over.setText("Game Over");
+    //     over.setHorizontalAlignment(SwingConstants.CENTER);
+    //     //System.exit(1000);
+    //     return over;
+
+    // }
 
     public static void main(String[] args) {
         //Create the window,
@@ -278,18 +265,18 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
         f.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         
         // Create the animation.
-<<<<<<< Updated upstream:src/animation/Ship/GameAnimation.java
         GameAnimation game = new GameAnimation();
-=======
-        ShipAnimation game = new ShipAnimation();
         
->>>>>>> Stashed changes:src/animation/Ship/ShipAnimation.java
 
         // // Add the animation to the window
         Container contentPane = f.getContentPane();
         contentPane.add(game, BorderLayout.CENTER);
         contentPane.add(scoreB,  BorderLayout.BEFORE_FIRST_LINE); 
         
+        // if( !shipVisible){
+        //     contentPane.add(gameOver());
+        // }
+
         // Display the window.
         f.setVisible(true); 
         
@@ -303,13 +290,6 @@ public class ShipAnimation extends AbstractAnimation implements KeyListener, Win
         //write it in HighScore file if currScore> file's score  
         f.addWindowListener(new WindowAdapter() { 
             public void windowClosing(WindowEvent ev) {
-                // int confirmed = JOptionPane.showConfirmDialog(null, 
-                // "Are you sure you want to exit the program?", "Exit Program Message Box",
-                // JOptionPane.YES_NO_OPTION);
-        
-                // if (confirmed == JOptionPane.YES_OPTION) {
-                //     System.exit(0);
-                // }    
                  
                 File myFile = new File( "src/animation/HighScore.txt");
                 Scanner reader;

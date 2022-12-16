@@ -64,6 +64,8 @@ public class Scoreborad extends JPanel implements AnimatedObject {
         score = score + 20; 
         this.header.setText("<html><h2>HighScore: " + getHighScore() +"     Score: "+ getScore() +"</h2></html>"); 
     }
+
+    
     /*
      * construct the scoreboard 
     */
