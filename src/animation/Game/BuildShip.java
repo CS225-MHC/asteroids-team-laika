@@ -1,12 +1,10 @@
-package animation.Ship;  
+package animation.Game;  
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.util.Random;
-import animation.AbstractAnimation;
-import animation.AnimatedObject;
 
 
 //build the ship 
@@ -198,7 +196,18 @@ public class BuildShip implements AnimatedObject {
         return rotateAmt;
     }
 
+    public double getSpeed(){
+        return speed;
+    }
 
+    public double getShipSize(){
+        return SHIP_SIZE;
+    }
+
+    public double setX(int num){
+        x = num;
+        return x;
+    }
 
 
 

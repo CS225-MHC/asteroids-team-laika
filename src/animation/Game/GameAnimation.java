@@ -1,4 +1,4 @@
-package animation.Ship;
+package animation.Game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -10,10 +10,6 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.swing.JFrame;
-import animation.AbstractAnimation;
-import animation.Bullet;
-import animation.Asteroids;
-import animation.Scoreborad;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -199,13 +195,11 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
         
     }
 

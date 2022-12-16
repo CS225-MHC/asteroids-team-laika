@@ -1,4 +1,4 @@
-package animation;
+package animation.Game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -130,11 +130,11 @@ public class Asteroids implements AnimatedObject {
         // and change the direction, so it will move right on its
         // next move.
 
-        else if (x +40 < 0) {
+        else if (x +40 <= 0) {
             x = animation.getWidth()-40;
             
         }
-        else if (y + 60<0){
+        else if (y + 60<= 0){
             y = animation.getHeight()-60;
             
         }
@@ -167,4 +167,19 @@ public class Asteroids implements AnimatedObject {
         return y;
 
     }
+
+    public double getAstX(){
+        return x;
+    }
+
+    public double getAstY(){
+        return y;
+    }
+
+    public double setAstX(int num){
+        x = num;
+        return x;
+    }
+
+
 }

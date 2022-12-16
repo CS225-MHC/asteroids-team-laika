@@ -1,4 +1,4 @@
-package animation;
+package animation.Game;
 import java.awt.Graphics2D;
 
 /**

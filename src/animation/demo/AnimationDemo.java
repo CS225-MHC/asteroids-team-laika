@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import animation.AbstractAnimation;
+import animation.Game.AbstractAnimation;
 
 /**
  * This class provides a simple demonstration of how you would implement an 

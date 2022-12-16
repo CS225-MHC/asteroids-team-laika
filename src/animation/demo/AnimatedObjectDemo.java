@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import animation.AbstractAnimation;
-import animation.AnimatedObject;
+import animation.Game.AbstractAnimation;
+import animation.Game.AnimatedObject;
 
 /**
  * A demo of what an animated object might look like. In this case, we have a
