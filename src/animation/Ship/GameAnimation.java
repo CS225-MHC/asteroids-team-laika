@@ -10,8 +10,6 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import animation.AbstractAnimation;
 import animation.Bullet;
 import animation.Asteroids;
@@ -24,12 +22,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.awt.event.WindowAdapter;
-
-//scoreIncrease: malfunctinoing due to checkCollision 
-//at the end of the game, only text is printed. Is that okay?(note, you can still move the ship and shoot but 
-//there'll be no asteroids obv & remaining asteroids will still roam around, there will be no ship)
-//one loophole found in the collison thingy. 
-//checkShipCollision - falls into a forever loop
 
 
 public class GameAnimation extends AbstractAnimation implements KeyListener, WindowListener{
@@ -45,8 +37,9 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     private static boolean shipVisible = true;
     private boolean moving = false;
 
-    // Create a bullet
-    private Bullet bullet ;
+    // Create a list of bullets
+    private Bullet[] bullets = new Bullet[100];
+    int b =0;
     private boolean bulletMoving = false; 
 
     //asteroid variables
@@ -72,12 +65,13 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             asteroidRotation = randNumber;
             //create random x and y points where each asteroid appears
             asteroidX = new Random().nextInt(400);
-            asteroidY = new Random().nextInt(400);
+            asteroidY = new Random().nextInt(380, 600); //makes the atreoids pop only in the corners 
             //update the asteroidList
             asteroidList[i] = new Asteroids(this, asteroidX, asteroidY, asteroidRotation, asteroidMoving);
 
          }
     }
+
     /**
      * @return the list of multiple asteroids
      */
@@ -109,8 +103,37 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         if(shipVisible){
             ship.paint((Graphics2D) g);
             if ( bulletMoving){
-                bullet.paint((Graphics2D) g);
+                int activeBullets=0;
+                for(int i=0; i<bullets.length;i++){
+                    if(bullets[i]!= null){
+                        activeBullets = activeBullets +1;
+                    }
+                }
+                for(int j =0; j < activeBullets;j++){
+                    bullets[j].paint((Graphics2D) g);
+                }    
            }
+
+           int counter = 0 ; 
+            for ( int i = 0 ; i< asteroidList.length; i++){
+                if ( getAsteroids()[i].astVisible == false){
+                    counter++;
+                } 
+                if( counter == asteroidList.length){
+                    if ( scoreB.getScore() > scoreB.getHighScore() ){
+                        g.setColor(Color.BLACK);
+                        g.setFont(new Font("arcade", Font.BOLD, 40));
+                        g.drawString("New High Score!!", 200, 200);
+                    }
+                    else{
+                        g.setColor(Color.BLACK);
+                        g.setFont(new Font("arcade", Font.BOLD, 40));
+                        g.drawString("You Win!!", 200, 200);
+                    }
+
+                }    
+                
+            }
         }else{
             g.setColor(Color.BLACK);
             g.setFont(new Font("arcade", Font.BOLD, 40));
@@ -123,20 +146,23 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             }        
         }
 
-        int counter = 0 ; 
-        for ( int i = 0 ; i< asteroidList.length; i++){
-            if ( getAsteroids()[i].astVisible == false){
-                counter++;
-            } 
-            if( counter == asteroidList.length){
-                g.setColor(Color.BLACK);
-                g.setFont(new Font("arcade", Font.BOLD, 40));
-                g.drawString("You Win!!", 200, 200);
-            }    
-            
-        }
+        
     }
 
+    public void buildBullet(){
+        int activeBullets=0;
+        for(int i=0; i<bullets.length;i++){
+            if(bullets[i]!= null){
+                activeBullets = activeBullets +1;
+            }
+        }
+        if ( activeBullets> b){
+            b++;
+        }
+        if(bullets[b] ==null){
+            bullets[b] = new Bullet(this, ship.getX(), ship.getY(), ship.getRotation());
+        }
+    }
 
     
     @Override
@@ -160,8 +186,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             break; 
         case KeyEvent.VK_SPACE:
             bulletMoving = true;
-            bullet = new Bullet(this, ship.getX(), ship.getY(), ship.getRotation());
-            bullet.shoot();
+            buildBullet();
             break;
         case KeyEvent.VK_SHIFT: 
             ship.hyperspace();
@@ -192,13 +217,28 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             
         }
         if ( bulletMoving){
-            bullet.nextFrame();
             // check if bullet hits an asteroid
-            for(int i = 0; i <asteroidList.length ; i++){ 
-                if (checkCollision (bullet, getAsteroids()[i])) {
-                    getAsteroids()[i].isMoving = false; //asteroid stops moving
-                    getAsteroids()[i].astVisible = false; //asteroid dissappears if bullets hits it 
+            int activeBullets=0;
+            for(int i=0; i<bullets.length;i++){
+                if(bullets[i]!= null){
+                    activeBullets = activeBullets +1;
                 }
+            }
+            for(int j =0; j < activeBullets;j++){
+                bullets[j].nextFrame();;
+            }
+            for(int j = 0; j< activeBullets; j++){ 
+                for (int i = 0; i <asteroidList.length ; i++){
+                    if (checkCollision (bullets[j], getAsteroids()[i])) { 
+                        getAsteroids()[i].isMoving = false; //asteroid stops moving
+                        getAsteroids()[i].astVisible = false;
+                        getAsteroids()[i].x = 2000000;
+                        getAsteroids()[i].y = 2000000; //puts the asteroid out of the frame  
+                        scoreB.increaseScore(); 
+                        break; 
+                    }
+                }
+
             }
         }
 
@@ -206,10 +246,10 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             getAsteroids()[i].nextFrame();
             // check if asteroid hits the ship
             if (checkShipCollision(getAsteroids()[i], ship)) {
-                shipVisible = false; // make ship disappear
-                System.out.println("HIT");
-                break;  //don't have any effect(?)
+                shipVisible = false;  // make ship disappear
+                break; 
             }
+            
         }
 
 
@@ -225,7 +265,6 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     private boolean checkCollision(Bullet shape1, Asteroids shape2) {
         
         if (shape2.getShape().intersects(shape1.getShape().getBounds2D())){
-            //scoreB.increaseScore(); 
             return true; 
         }else{
             return false; 
@@ -243,18 +282,6 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
 
     }
 
-    /** 
-     * call this method in case of ship-asteroid collison 
-     * @return component over which displays game over on the screen 
-     */
-    // public static Container gameOver(){
-    //     JLabel over = new JLabel(); 
-    //     over.setText("Game Over");
-    //     over.setHorizontalAlignment(SwingConstants.CENTER);
-    //     //System.exit(1000);
-    //     return over;
-
-    // }
 
     public static void main(String[] args) {
         //Create the window,
@@ -272,10 +299,6 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         Container contentPane = f.getContentPane();
         contentPane.add(game, BorderLayout.CENTER);
         contentPane.add(scoreB,  BorderLayout.BEFORE_FIRST_LINE); 
-        
-        // if( !shipVisible){
-        //     contentPane.add(gameOver());
-        // }
 
         // Display the window.
         f.setVisible(true); 

@@ -59,7 +59,7 @@ public class Asteroids implements AnimatedObject {
         p.addPoint(-20,20);
 
 
-
+        //this.setFocusable(true);
     
     }
 
