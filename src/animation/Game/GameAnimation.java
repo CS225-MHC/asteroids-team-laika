@@ -34,8 +34,8 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     private boolean moving = false;
 
     // Create a list of bullets
-    private Bullet[] bullets = new Bullet[100];
-    int b =0;
+    private Bullet[] bullets = new Bullet[1000];
+    private int b =0;
     private boolean bulletMoving = false; 
 
     //asteroid variables
@@ -46,7 +46,22 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     private boolean asteroidMoving = true;
 
     //Create the scoreboard 
-    static Scoreborad scoreB = new Scoreborad(); 
+    static Scoreboard scoreB = new Scoreboard(); 
+
+
+    /**
+     * Constructs an animation and initializes it to be able to accept
+     * key input.
+     */
+    public GameAnimation () {
+        // Allow the game to receive key input
+        setFocusable(true);
+        addKeyListener (this);
+        // creates the asteroids
+        setAsteroids();
+
+    }
+
 
     /**
      * Create a method to set an asteroids list of multiple asteroids
@@ -76,18 +91,6 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     }
 
     
-    /**
-     * Constructs an animation and initializes it to be able to accept
-     * key input.
-     */
-    public GameAnimation () {
-        // Allow the game to receive key input
-        setFocusable(true);
-        addKeyListener (this);
-        setAsteroids();
-
-    }
-
 
     /**
      * Paint the animation by painting the objects in the animation.
@@ -98,14 +101,16 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         super.paintComponent(g);
         if(shipVisible){
             ship.paint((Graphics2D) g);
-
+            
             if ( bulletMoving){
                 int activeBullets=0;
+                // tracks number of bullets that are not null
                 for(int i=0; i<bullets.length;i++){
                     if(bullets[i]!= null){
                         activeBullets = activeBullets +1;
                     }
                 }
+                // paints each individual active bullet
                 for(int j =0; j < activeBullets;j++){
                     bullets[j].paint((Graphics2D) g);
                 }    
@@ -114,10 +119,12 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
            int counter = 0 ; 
 
             for ( int i = 0 ; i< asteroidList.length; i++){
+                // checks if there are any active asteroids left
                 if ( getAsteroids()[i].astVisible == false){
                     counter++;
                 } 
-                if( counter == asteroidList.length){
+                if( counter == asteroidList.length){ 
+                    // if user sets a new high score
                     if ( scoreB.getScore() > scoreB.getHighScore() ){
                         g.setColor(Color.BLACK);
                         g.setFont(new Font("arcade", Font.BOLD, 40));
@@ -138,6 +145,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             g.drawString("Game Over", 200, 200);
         }
 
+        // painting all individual asteroids
         for(int i = 0; i <asteroidList.length ; i++){
             if(asteroidList[i].astVisible){
                 getAsteroids()[i].paint((Graphics2D) g);
@@ -148,18 +156,21 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     }
 
     /*
-     * initializes a new bullet at index b 
+     * creates a new bullet at index b, individually
      */
     public void buildBullet(){
         int activeBullets=0;
+        // tracks number of bullets that are not null
         for(int i=0; i<bullets.length;i++){
             if(bullets[i]!= null){
                 activeBullets = activeBullets +1;
             }
         }
+        // increases b if it is the same as # of active bullets
         if ( activeBullets> b){
             b++;
         }
+        // if bullet[b] is null then it initializes a new bullet at the ship's current location
         if(bullets[b] ==null){
             bullets[b] = new Bullet(this, ship.getX(), ship.getY(), ship.getRotation());
         }
@@ -209,7 +220,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
     }
 
     @Override
-    protected void nextFrame() {
+    public void nextFrame() {
          
         if (moving) {
             ship.nextFrame();
@@ -218,7 +229,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         if ( bulletMoving){
             // check if bullet hits an asteroid
             int activeBullets=0;
-
+            // tracks number of bullets that are not null
             for(int i=0; i<bullets.length;i++){
                 if(bullets[i]!= null){
                     activeBullets = activeBullets +1;
@@ -228,7 +239,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
             for(int j =0; j < activeBullets;j++){
                 bullets[j].nextFrame();;
             }
-
+            // checks for collision between bullet and asteroid
             for(int j = 0; j< activeBullets; j++){ 
                 for (int i = 0; i <asteroidList.length ; i++){
                     if (checkCollision (bullets[j], getAsteroids()[i])) { 
@@ -264,7 +275,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
      * @param shape2 the asteroid
      * @return true if the shapes intersect
      */
-    private boolean checkCollision(Bullet shape1, Asteroids shape2) {
+    public boolean checkCollision(Bullet shape1, Asteroids shape2) { //changed to public 
         
         if (shape2.getShape().intersects(shape1.getShape().getBounds2D())){
             return true; 
@@ -280,7 +291,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
      * @param shape2 the ship
      * @return
      */
-    private boolean checkShipCollision(Asteroids shape1, BuildShip shape2){
+    public boolean checkShipCollision(Asteroids shape1, BuildShip shape2){
 
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
 
@@ -318,7 +329,7 @@ public class GameAnimation extends AbstractAnimation implements KeyListener, Win
         f.addWindowListener(new WindowAdapter() { 
             public void windowClosing(WindowEvent ev) {
                  
-                File myFile = new File( "src/animation/HighScore.txt");
+                File myFile = new File( "src/animation/Game/HighScore.txt");
                 Scanner reader;
                 try {
                     reader = new Scanner(myFile);

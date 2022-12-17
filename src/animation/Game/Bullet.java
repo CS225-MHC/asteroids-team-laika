@@ -82,12 +82,4 @@ public class Bullet implements AnimatedObject{
         
     }
 
-    /**
-     * this method is executed when the ship tries to shoot bullet
-     */
-    public boolean shoot() {
-        nextFrame();
-        return moving; 
-    }
-
 }

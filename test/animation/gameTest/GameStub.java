@@ -8,6 +8,10 @@ public class GameStub extends GameAnimation{
         return 600;
     }
 
+    public int getHeight(){
+        return 600; 
+    }
+
     //ship's location
     public int shipLocation(){
         return -20;

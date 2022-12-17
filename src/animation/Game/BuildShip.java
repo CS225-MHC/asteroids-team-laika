@@ -9,6 +9,7 @@ import java.util.Random;
 
 //build the ship 
 public class BuildShip implements AnimatedObject {
+
     //shape of the ship 
     private Polygon s; 
 
@@ -107,7 +108,6 @@ public class BuildShip implements AnimatedObject {
      */
     public void turnRight() {
         rotateAmt = rotateAmt + Math.PI/4;
-
     }
 
     /**
@@ -152,6 +152,7 @@ public class BuildShip implements AnimatedObject {
     
     }
 
+    //used for testing 
     public double getX(){
         return x; 
     }
@@ -172,10 +173,15 @@ public class BuildShip implements AnimatedObject {
         return SHIP_SIZE;
     }
 
-    public double setX(int num){
+    public double setX(double num){
         x = num;
         return x;
     }
+    public double setY(double num){
+        y = num;
+        return y;
+    }
+
 
 
 

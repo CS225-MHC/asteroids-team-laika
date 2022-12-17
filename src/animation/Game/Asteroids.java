@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
  *
  */
 public class Asteroids implements AnimatedObject {
+
     // The shape that is drawn
     private Polygon p;
     
@@ -59,8 +60,6 @@ public class Asteroids implements AnimatedObject {
         p.addPoint(-20,0);
         p.addPoint(-20,20);
 
-
-        //this.setFocusable(true);
     
     }
 
@@ -83,8 +82,8 @@ public class Asteroids implements AnimatedObject {
      * and rotation
      * @return the shape located as we want it to appear
      */
-    // public Shape getShape(double rotation) {
-        public Shape getShape() {
+   
+    public Shape getShape() {
         // AffineTransform captures the movement and rotation we
         // want the shape to have
         AffineTransform at1 = new AffineTransform();
@@ -92,7 +91,6 @@ public class Asteroids implements AnimatedObject {
         // x, y are where the origin of the shape will be.
         at1.translate(x, y);
 
-        
         // Rotate the shape according to random angle
         at1.rotate(rotation);
         AffineTransform at = at1;
@@ -106,10 +104,10 @@ public class Asteroids implements AnimatedObject {
 
        if(isMoving){
         // Update the x value to move in the current direction
-      
-        x = calculateX(x, rotation);
-        y = calculateY(y, rotation);
+            x = calculateX(x, rotation);
+            y = calculateY(y, rotation);
 
+        // wrap around 
         if (x - 40> animation.getWidth()) {
             x = 0;
         }
@@ -156,6 +154,7 @@ public class Asteroids implements AnimatedObject {
 
     }
 
+    // used for testing
     public double getAstX(){
         return x;
     }
@@ -164,9 +163,14 @@ public class Asteroids implements AnimatedObject {
         return y;
     }
 
-    public double setAstX(int num){
+    public double setAstX(double num){
         x = num;
         return x;
+    }
+
+    public double setAstY(double num){
+        y = num;
+        return y;
     }
 
 
